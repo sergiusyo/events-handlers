@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events & Clickers</title>
+    <script defer src="index.js"></script>
+  </head>
+  <body>
+    <!-- просто прямоугольник, который мы будем таскать мышкой -->
+    <div
+      id="drag-me"
+      style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 11px;
+        background: grey;
+        text-align: center;
+      "
+    >
+      Перетащи меня
+    </div>
+
+    <script>
+      (() => {
+        const dragDiv = document.getElementById("drag-me");
+
+        let x, y, left, top;
+
+        function onmove(e) {
+          e.preventDefault();
+          dragDiv.style.left = e.clientX - x + left;
+          dragDiv.style.top = e.clientX - y + top;
+        }
+
+        // жмем на прямоугольник (mousedown, нажатие кнопки мыши)
+        dragDiv.addEventListener("mousedown", (e) => {
+          x = e.clientX;
+          y = e.clientY;
+          left = parseInt(dragDiv.style.left);
+          top = parseInt(dragDiv.style.top);
+          //добавляем обработчик движения мыши по экрану
+          window.addEventListener("mousemove", onmove);
+        });
+
+        // отпускаем мышку (mouseup, отжатие кнопки мыши)...
+        document.addEventListener("mouseup", () => {
+          //а когда происходит отпускание кнопки, убираем обработчик onmove,
+          // чтобы перестать перемещать элемент
+          window.removeEventListener("mousemove", onmove);
+        });
+      })();
+    </script>
+  </body>
+</html>
